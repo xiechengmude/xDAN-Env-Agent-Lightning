@@ -496,6 +496,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../how-to/examples-catalog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples Catalog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../how-to/unsloth-sft/" class="md-nav__link">
         
   
@@ -676,7 +704,35 @@
   <span class="md-ellipsis">
     
   
-    Working with Traces
+    Work with Traces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/emitter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use Emitters
   
 
     
@@ -1530,6 +1586,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../reference/semconv/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Semantic Conventions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../reference/store/" class="md-nav__link">
         
   
@@ -1622,6 +1706,34 @@
     
   
     RESTful
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/utilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Utilities
   
 
     
@@ -2313,7 +2425,48 @@ overrides are merged with VERL's packaged defaults via Hydra before
 launching training.</p>
           </div>
         </li>
+        <li class="doc-section-item field-body">
+            <b><code>trainer_cls</code></b>
+              (<code><span title="typing.Optional">Optional</span>[<span title="typing.Type">Type</span>[<a class="autorefs autorefs-internal" title="            AgentLightningTrainer (agentlightning.verl.trainer.AgentLightningTrainer)" href="#agentlightning.verl.AgentLightningTrainer">AgentLightningTrainer</a>]]</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Optional override for the trainer class. Experimental.</p>
+          </div>
+        </li>
+        <li class="doc-section-item field-body">
+            <b><code>daemon_cls</code></b>
+              (<code><span title="typing.Optional">Optional</span>[<span title="typing.Type">Type</span>[<a class="autorefs autorefs-internal" title="            AgentModeDaemon (agentlightning.verl.daemon.AgentModeDaemon)" href="#agentlightning.verl.AgentModeDaemon">AgentModeDaemon</a>]]</code>, default:
+                  <code>None</code>
+)
+          –
+          <div class="doc-md-description">
+            <p>Optional override for the daemon class. Experimental.</p>
+          </div>
+        </li>
     </ul>
+        <div class="admonition note">
+<p class="admonition-title">Trajectory aggregation (experimental)</p>
+<p>Trajectory-level aggregation merges an entire multi-turn rollout into a single,
+masked training sample so GPU time is spent once per trajectory rather than N times
+per turn. Enable it via:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">config</span><span class="p">[</span><span class="s2">&quot;agentlightning&quot;</span><span class="p">][</span><span class="s2">&quot;trace_aggregator&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="s2">&quot;level&quot;</span><span class="p">:</span> <span class="s2">&quot;trajectory&quot;</span><span class="p">,</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="s2">&quot;trajectory_max_prompt_length&quot;</span><span class="p">:</span> <span class="mi">4096</span><span class="p">,</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="s2">&quot;trajectory_max_response_length&quot;</span><span class="p">:</span> <span class="mi">34384</span><span class="p">,</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="p">}</span>
+</code></pre></div>
+<p>Keep conversations structured (message lists rather than manual string
+concatenation) so prefix matching can stitch traces. <code>trajectory_max_prompt_length</code>
+should be set to the maximum length of the prompt for the first turn, and
+<code>trajectory_max_response_length</code> should be set to the maximum cumulative
+length of agent responses in the full trajectory.
+Toggle <code>debug=True</code> plus <code>mismatch_log_dir</code> when you need to inspect
+retokenization or chat-template mismatches. See
+<a href="https://agent-lightning.github.io/posts/trajectory_level_aggregation/">this blog post</a>
+for more details.</p>
+</div>
 
 
 <p><span class="doc-section-title">Examples:</span></p>
@@ -2672,7 +2825,7 @@ the original interface for compatibility with the RayPPOTrainer.</p>
 
 
 <h5 id="agentlightning.verl.AgentModeDaemon.get_train_data_batch" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">get_train_data_batch</span><span class="p">(</span><span class="n">max_prompt_length</span><span class="p">,</span> <span class="n">max_response_length</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span></code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">get_train_data_batch</span><span class="p">(</span><span class="n">max_prompt_length</span><span class="p">,</span> <span class="n">max_response_length</span><span class="p">,</span> <span class="n">device</span><span class="p">,</span> <span class="n">global_steps</span><span class="p">)</span></code>
 
 <a href="#agentlightning.verl.AgentModeDaemon.get_train_data_batch" class="headerlink" title="Permanent link">&para;</a></h5>
 

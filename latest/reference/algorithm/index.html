@@ -496,6 +496,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../../how-to/examples-catalog/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples Catalog
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../how-to/unsloth-sft/" class="md-nav__link">
         
   
@@ -676,7 +704,35 @@
   <span class="md-ellipsis">
     
   
-    Working with Traces
+    Work with Traces
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../tutorials/emitter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Use Emitters
   
 
     
@@ -1842,6 +1898,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../semconv/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Semantic Conventions
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../store/" class="md-nav__link">
         
   
@@ -1934,6 +2018,34 @@
     
   
     RESTful
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../utilities/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Utilities
   
 
     
@@ -3392,6 +3504,7 @@ finish.</p>
 <p>The baseline algorithm batches task submissions, waits for each rollout to
 finish, and logs every collected span and reward. It is primarily useful as
 a smoke test for the platform plumbing rather than a performant trainer.</p>
+<p>The baseline algorithm will auto-start a LLM proxy if one is provided and not yet started.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -3497,7 +3610,7 @@ throttling additional submissions.</p>
 
 
 <h4 id="agentlightning.Baseline.run" class="doc doc-heading">
-<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">run</span><span class="p">(</span><span class="n">train_dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">val_dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+<code class="doc-symbol doc-symbol-heading doc-symbol-method"></code>            <code class="highlight language-python"><span class="n">run</span><span class="p">(</span><span class="n">store</span><span class="p">,</span> <span class="n">llm_proxy</span><span class="p">,</span> <span class="n">train_dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">val_dataset</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-async"><code>async</code></small>
@@ -4472,7 +4585,7 @@ When <code>num_workers &gt; 1</code>, the server will be run using <a href="http
 
   
       module-attribute
-   (agentlightning.utils.server_launcher.LaunchMode)" href="../internal/#agentlightning.utils.server_launcher.LaunchMode">LaunchMode</a></code>, default:
+   (agentlightning.utils.server_launcher.LaunchMode)" href="../utilities/#agentlightning.utils.server_launcher.LaunchMode">LaunchMode</a></code>, default:
                   <code>&#39;mp&#39;</code>
 )
           –
@@ -4491,7 +4604,7 @@ It is NOT recommended because it often causes hanging requests. Only use it if y
 
   
       dataclass
-  " href="../internal/#agentlightning.utils.server_launcher.PythonServerLauncherArgs">PythonServerLauncherArgs</a> | None</code>, default:
+  " href="../utilities/#agentlightning.utils.server_launcher.PythonServerLauncherArgs">PythonServerLauncherArgs</a> | None</code>, default:
                   <code>None</code>
 )
           –
@@ -4501,7 +4614,7 @@ It is NOT recommended because it often causes hanging requests. Only use it if y
         </li>
         <li class="doc-section-item field-body">
             <b><code>middlewares</code></b>
-              (<code><span title="typing.List">List</span>[<span title="typing.Union">Union</span>[<span title="typing.Type">Type</span>[<span title="starlette.middleware.base.BaseHTTPMiddleware">BaseHTTPMiddleware</span>], <span title="str">str</span>]] | None</code>, default:
+              (<code><span title="typing.Sequence">Sequence</span>[<span title="typing.Union">Union</span>[<span title="typing.Type">Type</span>[<span title="starlette.middleware.base.BaseHTTPMiddleware">BaseHTTPMiddleware</span>], <span title="str">str</span>]] | None</code>, default:
                   <code>None</code>
 )
           –
@@ -4514,14 +4627,14 @@ Middlewares are the <strong>first layer</strong> of request processing. They are
         </li>
         <li class="doc-section-item field-body">
             <b><code>callbacks</code></b>
-              (<code><span title="typing.List">List</span>[<span title="typing.Union">Union</span>[<span title="typing.Type">Type</span>[<span title="litellm.integrations.custom_logger.CustomLogger">CustomLogger</span>], <span title="str">str</span>]] | None</code>, default:
+              (<code><span title="typing.Sequence">Sequence</span>[<span title="typing.Union">Union</span>[<span title="typing.Type">Type</span>[<span title="litellm.integrations.custom_logger.CustomLogger">CustomLogger</span>], <span title="str">str</span>]] | None</code>, default:
                   <code>None</code>
 )
           –
           <div class="doc-md-description">
             <p>List of LiteLLM callback classes or strings to register. You can specify the class aliases or classes that have been imported.
 If not provided, the default callbacks (AddReturnTokenIds and LightningOpenTelemetry) will be used.
-Available callback aliases are: "return_token_ids", "opentelemetry".</p>
+Available callback aliases are: "return_token_ids", "opentelemetry", "logprobs".</p>
           </div>
         </li>
     </ul>
